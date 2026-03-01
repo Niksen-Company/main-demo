@@ -13,10 +13,17 @@ document.addEventListener('DOMContentLoaded', () => {
     list.innerHTML = '';
     todos.forEach((todo, index) => {
       const li = document.createElement('li');
-      li.textContent = todo.text;
       if (todo.done) li.classList.add('done');
 
+      const span = document.createElement('span');
+      span.className = 'task-text';
+      span.textContent = todo.text;
+
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+
       const toggleBtn = document.createElement('button');
+      toggleBtn.className = 'btn-toggle';
       toggleBtn.textContent = todo.done ? 'Undo' : 'Done';
       toggleBtn.addEventListener('click', () => {
         todos[index].done = !todos[index].done;
@@ -25,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       const delBtn = document.createElement('button');
+      delBtn.className = 'btn-delete';
       delBtn.textContent = 'Delete';
       delBtn.addEventListener('click', () => {
         todos.splice(index, 1);
@@ -32,8 +40,10 @@ document.addEventListener('DOMContentLoaded', () => {
         render();
       });
 
-      li.appendChild(toggleBtn);
-      li.appendChild(delBtn);
+      actions.appendChild(toggleBtn);
+      actions.appendChild(delBtn);
+      li.appendChild(span);
+      li.appendChild(actions);
       list.appendChild(li);
     });
   }
