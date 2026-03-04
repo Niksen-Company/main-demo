@@ -126,11 +126,29 @@
 
       function loadTasks() {
         try {
-          var saved = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+          var raw = JSON.parse(localStorage.getItem(STORAGE_KEY));
+          var saved = Array.isArray(raw) ? raw : [];
+          var normalized = [];
+
           saved.forEach(function (t) {
-            if (t.id >= nextId) nextId = t.id + 1;
+            if (!t || typeof t !== 'object') return;
+
+            var id = Number(t.id);
+            if (!Number.isFinite(id) || id < 0) return;
+
+            var text = typeof t.text === 'string' ? t.text : String(t.text || '');
+            if (!text) return;
+
+            var done = !!t.done;
+
+            normalized.push({ id: id, text: text, done: done });
+
+            if (id >= nextId) {
+              nextId = id + 1;
+            }
           });
-          return saved;
+
+          return normalized;
         } catch (e) {
           return [];
         }
