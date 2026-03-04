@@ -241,7 +241,10 @@
           const cb = document.createElement('input');
           cb.type = 'checkbox';
           cb.checked = task.done;
-          cb.setAttribute('aria-label', 'Mark task as done');
+          cb.setAttribute(
+            'aria-label',
+            (task.done ? 'Mark task "' + task.text + '" as not done' : 'Mark task "' + task.text + '" as done')
+          );
           cb.addEventListener('change', function () {
             task.done = cb.checked;
             save();
