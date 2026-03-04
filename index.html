@@ -208,7 +208,18 @@
   <script>
     (function () {
       const STORAGE_KEY = 'niksen_todos';
-      let tasks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      let tasks = [];
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        tasks = raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        tasks = [];
+        try {
+          localStorage.removeItem(STORAGE_KEY);
+        } catch (ignore) {
+          // Ignore storage errors
+        }
+      }
       let filter = 'all';
       let nextId = tasks.reduce(function (max, t) { return t.id > max ? t.id : max; }, 0) + 1;
 
