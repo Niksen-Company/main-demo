@@ -232,7 +232,20 @@
           return true;
         });
 
-        emptyMsg.style.display = filtered.length === 0 ? 'block' : 'none';
+        if (filtered.length === 0) {
+          emptyMsg.style.display = 'block';
+          if (tasks.length === 0) {
+            emptyMsg.textContent = 'No tasks yet. Add one above!';
+          } else if (filter === 'active') {
+            emptyMsg.textContent = 'No active tasks.';
+          } else if (filter === 'done') {
+            emptyMsg.textContent = 'No completed tasks.';
+          } else {
+            emptyMsg.textContent = 'No tasks yet. Add one above!';
+          }
+        } else {
+          emptyMsg.style.display = 'none';
+        }
 
         filtered.forEach(function (task) {
           const li = document.createElement('li');
